@@ -23,7 +23,6 @@ model User {
 
   // Relations
   clinicID      String[]  @db.ObjectId
-  clinics       Clinic[]  @relation(fields: [clinicID], references: [id])
   emailVerified Boolean
   sessions      Session[]
   accounts      Account[]
@@ -76,82 +75,15 @@ model Verification {
   @@map("verification")
 }
 
-model Clinic {
+model Postagem {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  address   String
-  phone     String
-  email     String?
-  website   String?
+  titulo    String
+  foto      String
+  descricao String
+  fotografo String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
   userID       String[]
-  users        User[]        @relation(fields: [userID], references: [id])
-  doctors      Doctor[]
-  patients     Patient[]
-  appointments Appointment[]
-}
-
-model Doctor {
-  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name                    String
-  avatarImageUrl          String?
-  specialty               String
-  // 1 - Monday, 2 - Tuesday, 3 - Wednesday, 4 - Thursday, 5 - Friday, 6 - Saturday, 0 - Sunday
-  availableFromWeekDay    Int // 1
-  availableToWeekDay      Int // 5
-  availableFromTime       DateTime
-  availableToTime         DateTime
-  appointmentPriceInCents Int
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
-
-  // Relations
-  clinics      Clinic        @relation(fields: [clinicID], references: [id], onDelete: Cascade)
-  clinicID     String        @db.ObjectId
-  appointments Appointment[]
-}
-
-model Patient {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String
-  phone     String
-  sex       Sex
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  clinics      Clinic        @relation(fields: [clinicID], references: [id], onDelete: Cascade)
-  clinicID     String        @db.ObjectId
-  appointments Appointment[]
-}
-
-enum Sex {
-  female
-  male
-}
-
-model Appointment {
-  id        String            @id @default(auto()) @map("_id") @db.ObjectId
-  date      DateTime
-  status    AppointmentStatus
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-
-  // Relations
-  clinic    Clinic  @relation(fields: [clinicID], references: [id], onDelete: Cascade)
-  clinicID  String  @db.ObjectId
-  patient   Patient @relation(fields: [patientID], references: [id], onDelete: Cascade)
-  patientID String  @db.ObjectId
-  doctor    Doctor  @relation(fields: [doctorID], references: [id], onDelete: Cascade)
-  doctorID  String  @db.ObjectId
-}
-
-enum AppointmentStatus {
-  scheduled
-  completed
-  cancelled
 }
