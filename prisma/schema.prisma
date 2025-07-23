@@ -22,7 +22,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  clinicID      String[]  @db.ObjectId
   emailVerified Boolean
   sessions      Session[]
   accounts      Account[]
@@ -80,10 +79,10 @@ model Postagem {
   titulo    String
   foto      String
   descricao String
-  fotografo String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+}
 
-  // Relations
-  userID       String[]
+model Secretaria{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
 }

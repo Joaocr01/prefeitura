@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -20,19 +20,23 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
+// Schema para validação
 const postSchema = z.object({
-  titulo: z.string().trim().min(1, { message: 'Título é obrigatório' }),
-  foto: z.string().trim().min(1, { message: 'URL da foto é obrigatória' }),
-  descricao: z.string().trim().min(1, { message: 'Descrição é obrigatória' }),
-  fotografo: z.string().trim().min(1, { message: 'Fotógrafo é obrigatório' }),
+  titulo: z.string().min(1, { message: 'Título é obrigatório' }),
+  foto: z.string().min(1, { message: 'URL da foto é obrigatória' }),
+  descricao: z.string().min(1, { message: 'Descrição é obrigatória' }),
+  fotografo: z.string().min(1, { message: 'Fotógrafo é obrigatório' }),
 })
 
-const PostForm = () => {
-  const router = useRouter()
+type Postagem = z.infer<typeof postSchema> & { id?: string }
 
-  const form = useForm({
+const ClinicForm = ({ initialData }: { initialData?: Postagem }) => {
+  const router = useRouter()
+  const isEdit = Boolean(initialData)
+
+  const form = useForm<Postagem>({
     resolver: zodResolver(postSchema),
-    defaultValues: {
+    defaultValues: initialData ?? {
       titulo: '',
       foto: '',
       descricao: '',
@@ -40,32 +44,50 @@ const PostForm = () => {
     },
   })
 
-  const onSubmit = async (data: z.infer<typeof postSchema>) => {
+  const onSubmit = async (data: Postagem) => {
     try {
-      const response = await fetch('/api/postagens', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          titulo: data.titulo,
-          foto: data.foto,
-          descricao: data.descricao,
-          fotografo: data.fotografo,
-          // userID será preenchido no backend com o usuário autenticado
-        }),
-      })
+      const response = await fetch(
+        isEdit ? `/api/postagens/${initialData?.id}` : '/api/postagens',
+        {
+          method: isEdit ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+      )
+
+      if (!response.ok) throw new Error('Erro ao salvar postagem')
 
       const result = await response.json()
-
-      if (response.ok) {
-        toast.success(`Postagem "${result.titulo}" criada com sucesso!`)
-        router.refresh()
-      } else {
-        toast.error(result?.message || 'Erro ao criar postagem.')
-      }
+      toast.success(
+        `Postagem "${result.titulo}" ${isEdit ? 'atualizada' : 'criada'} com sucesso!`
+      )
+      router.push('/')
+      router.refresh()
     } catch (error) {
-      toast.error('Ocorreu um erro inesperado.')
+      toast.error(`Erro ao ${isEdit ? 'atualizar' : 'criar'} postagem`)
+      console.error(error)
+    }
+  }
+
+  const onDelete = async () => {
+    if (!initialData?.id) return
+    if (!confirm('Tem certeza que deseja excluir esta postagem?')) return
+
+    try {
+      const response = await fetch(`/api/postagens/${initialData.id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) throw new Error('Erro ao excluir postagem')
+
+      toast.success('Postagem excluída com sucesso!')
+      router.push('/')
+      router.refresh()
+    } catch (error) {
+      toast.error('Erro ao excluir postagem')
+      console.error(error)
     }
   }
 
@@ -85,7 +107,6 @@ const PostForm = () => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="foto"
@@ -99,7 +120,6 @@ const PostForm = () => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="descricao"
@@ -117,7 +137,6 @@ const PostForm = () => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="fotografo"
@@ -131,21 +150,40 @@ const PostForm = () => {
             </FormItem>
           )}
         />
-
-        <DialogFooter>
+        <DialogFooter className="flex justify-between items-center">
           <DialogClose asChild>
-            <Button variant="outline">Cancelar</Button>
+            <Button
+  variant="outline"
+  onClick={() => {
+    router.push('/postagens')
+  }}
+>
+  Cancelar
+</Button>
           </DialogClose>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+
+          <div className="flex gap-2">
+            {isEdit && (
+              <Button
+                variant="destructive"
+                type="button"
+                onClick={onDelete}
+              >
+                <Trash className="w-4 h-4 mr-1" />
+                Excluir
+              </Button>
             )}
-            Criar Postagem
-          </Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && (
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              )}
+              {isEdit ? 'Atualizar' : 'Criar'} Postagem
+            </Button>
+          </div>
         </DialogFooter>
       </form>
     </Form>
   )
 }
 
-export default PostForm
+export default ClinicForm

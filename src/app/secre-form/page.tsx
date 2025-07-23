@@ -9,16 +9,26 @@ import {
   DialogClose
 } from '@/components/ui/dialog'
 
-import PostForm from './_components/form'
+import SecreForm from './_components/form'
 import { X } from 'lucide-react' // Importe um ícone para fechar
+import { auth } from '@/lib/auth'
+import prisma from '@/lib/prisma'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 
+const CreatePostPage = async () => {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    })
 
-const CreatePostPage = () => {
+    if (!session?.user) {
+      redirect('/authentication')
+    }
   return (
     <Dialog open>
       <DialogTrigger asChild>
-        <Button variant="outline">Adicionar clínica</Button>
+        <Button variant="outline">Adicionar Secretaria</Button>
       </DialogTrigger>
 
       {/* Overlay de fundo */}
@@ -30,9 +40,9 @@ const CreatePostPage = () => {
         <div className="sticky top-0 bg-white z-10 border-b p-6">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-semibold">Adicionar clínica</h2>
+              <h2 className="text-lg font-semibold">Adicionar Secretaria</h2>
               <p className="text-sm text-muted-foreground">
-                Adicione uma clínica para continuar.
+                Adicione uma Secretaria.
               </p>
             </div>
             <DialogClose asChild>
@@ -45,7 +55,7 @@ const CreatePostPage = () => {
 
         {/* Conteúdo rolável */}
         <div className="flex-1 overflow-y-auto p-6">
-          <PostForm />
+          <SecreForm />
         </div>
 
         {/* Rodapé fixo (se necessário) */}
@@ -55,7 +65,7 @@ const CreatePostPage = () => {
               Cancelar
             </Button>
           </DialogClose>
-          <Button>Salvar clínica</Button>
+          <Button>Salvar Secretaria</Button>
         </div>
       </div>
     </Dialog>
