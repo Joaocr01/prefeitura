@@ -61,6 +61,13 @@ export default function RoteiroPage() {
           <li><strong>D</strong> – Deletar Postagem</li>
         </ul>
       </section>
+      <section className="mb-6">
+        <h2 className="text-xl font-semibold">Logins:</h2>
+        <ul className="list-disc pl-6">
+          <li><strong>C</strong> – Como não é todo usuario que pode logar(Somente adm)</li>
+          <li><strong>C</strong> – Como não é todo usuario que pode logar(Somente adm)</li>
+        </ul>
+      </section>
 
       <p className="text-center mt-10 text-sm text-gray-500">
         Página de roteiro criada para facilitar a navegação e o entendimento do sistema.

@@ -58,7 +58,7 @@ const LoginForm = () => {
       },
       {
         onSuccess: () => {
-          router.push('/dashboard')
+          router.push('/')
         },
         onError: () => {
           toast.error(
