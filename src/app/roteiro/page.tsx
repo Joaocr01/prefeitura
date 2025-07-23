@@ -61,12 +61,11 @@ export default function RoteiroPage() {
           <li><strong>D</strong> – Deletar Postagem</li>
         </ul>
       </section>
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Logins:</h2>
-        <ul className="list-disc pl-6">
-          <li><strong>C</strong> – Como não é todo usuario que pode logar(Somente adm)</li>
-          <li><strong>C</strong> – Como não é todo usuario que pode logar(Somente adm)</li>
-        </ul>
+      <section>
+          <p>Como não é todo usuario que pode logar(Somente adm)</p>
+          <p>Coloque esse Login</p>
+          <p>email: jc018053@gmail.com</p>
+          <p>senha: 998290811</p>
       </section>
 
       <p className="text-center mt-10 text-sm text-gray-500">
