@@ -46,7 +46,7 @@ export default function RoteiroPage() {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold">5. Ações Extras</h2>
+        <h2 className="text-xl font-semibold">5. Ações</h2>
         <p>
           Na tela de lista de publicações, é possível criar novas postagens ou excluir qualquer uma diretamente.
         </p>
