@@ -152,9 +152,6 @@ const form = useForm<Postagem>({
           )}
 
           <div className="flex gap-2">
-            <Button variant="outline" type="button" onClick={onCancel}>
-              Cancelar
-            </Button>
 
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting && (

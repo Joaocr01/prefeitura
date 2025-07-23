@@ -58,16 +58,7 @@ const CreatePostPage = async () => {
           <SecreForm />
         </div>
 
-        {/* Rodapé fixo (se necessário) */}
-        <div className="sticky bottom-0 bg-white border-t p-4 flex justify-end">
-          <DialogClose asChild>
-            <Button variant="outline" className="mr-2">
-              Cancelar
-            </Button>
-          </DialogClose>
-          <Button>Salvar Secretaria</Button>
         </div>
-      </div>
     </Dialog>
   )
 }

@@ -18,9 +18,9 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
-              {['Notícias', 'Editais', 'Licitações', 'Contato'].map((item, index) => (
+              {['Painel'].map((item, index) => (
                 <li key={index}>
-                  <a href="#" className="hover:text-yellow-300 transition-colors">
+                  <a href="/post-form" className="hover:text-yellow-300 transition-colors">
                     {item}
                   </a>
                 </li>

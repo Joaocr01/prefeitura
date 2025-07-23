@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import Image from 'next/image'
+import HomeClient from '../components/ui/HomeClient'
 
 export default async function Home() {
   const postagens = await prisma.postagem.findMany({
@@ -7,7 +8,10 @@ export default async function Home() {
   })
 
   return (
-    <main className="max-w-2xl mx-auto p-4">
+
+    <>
+    <HomeClient postagens={postagens} />
+        <main className="max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Últimas Postagens</h1>
 
       <div className="space-y-8">
@@ -41,5 +45,7 @@ export default async function Home() {
         </p>
       )}
     </main>
+    </>
+
   )
 }

@@ -77,14 +77,21 @@ return (
         )}
       />
          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancelar</Button>
-            </DialogClose>
+                                          <DialogClose asChild>
+            <Button
+  variant="outline"
+  onClick={() => {
+    router.push('/post-form')
+  }}
+>
+  cancelar
+</Button>
+          </DialogClose>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting && (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               )}
-              Criar Postagem
+              Criar Secretaria
             </Button>
           </DialogFooter>
     </form>

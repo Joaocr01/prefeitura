@@ -25,7 +25,6 @@ const postSchema = z.object({
   titulo: z.string().min(1, { message: 'Título é obrigatório' }),
   foto: z.string().min(1, { message: 'URL da foto é obrigatória' }),
   descricao: z.string().min(1, { message: 'Descrição é obrigatória' }),
-  fotografo: z.string().min(1, { message: 'Fotógrafo é obrigatório' }),
 })
 
 type Postagem = z.infer<typeof postSchema> & { id?: string }
@@ -40,7 +39,6 @@ const ClinicForm = ({ initialData }: { initialData?: Postagem }) => {
       titulo: '',
       foto: '',
       descricao: '',
-      fotografo: '',
     },
   })
 
@@ -137,19 +135,6 @@ const ClinicForm = ({ initialData }: { initialData?: Postagem }) => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="fotografo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fotógrafo</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="Nome do fotógrafo" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <DialogFooter className="flex justify-between items-center">
           <DialogClose asChild>
             <Button
@@ -161,6 +146,8 @@ const ClinicForm = ({ initialData }: { initialData?: Postagem }) => {
   Cancelar
 </Button>
           </DialogClose>
+
+
 
           <div className="flex gap-2">
             {isEdit && (
@@ -179,10 +166,32 @@ const ClinicForm = ({ initialData }: { initialData?: Postagem }) => {
               )}
               {isEdit ? 'Atualizar' : 'Criar'} Postagem
             </Button>
+                              <DialogClose asChild>
+            <Button
+  variant="outline"
+  onClick={() => {
+    router.push('/postagens')
+  }}
+>
+  Editar Postagens
+</Button>
+          </DialogClose>
+                                        <DialogClose asChild>
+            <Button
+  variant="outline"
+  onClick={() => {
+    router.push('/secre-form')
+  }}
+>
+  Criar Secretaria
+</Button>
+          </DialogClose>
           </div>
         </DialogFooter>
+
       </form>
     </Form>
+
   )
 }
 
