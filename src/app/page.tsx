@@ -12,7 +12,6 @@ export default async function Home() {
     <>
     <HomeClient postagens={postagens} />
         <main className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Últimas Postagens</h1>
 
       <div className="space-y-8">
         {postagens.map((post) => (
@@ -41,7 +40,6 @@ export default async function Home() {
 
       {postagens.length === 0 && (
         <p className="text-center py-8 text-gray-500">
-          Nenhuma postagem encontrada.
         </p>
       )}
     </main>
